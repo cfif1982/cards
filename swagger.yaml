@@ -1,0 +1,475 @@
+swagger: "2.0"
+info:
+  version: "v1"
+  title: cards
+  description: >-
+    This is a sample User's cards application based on the OpenAPI 2.0
+    specification.
+  contact: {}
+host: "localhost:8080"
+basePath: /api
+schemes:
+  - http
+paths:
+  /bank:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Create a new bank in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewBank"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Bank"
+        "400":
+          description: Invalid input
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - bank
+      description: Add a new bank to the base
+      operationId: addBank
+      summary: Add a new bank
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Update an existent bank in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Bank"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Bank"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Bank not found
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - bank
+      description: Update an existing bank by uuid
+      operationId: updateBank
+      summary: Update an existing bank
+  "/bank/{bankId}":
+    delete:
+      parameters:
+        - description: Bank uuid to delete
+          format: byte16
+          in: path
+          name: bankId
+          required: true
+          type: integer
+      responses:
+        "400":
+          description: Invalid bank value
+      security:
+        - api_key: []
+      tags:
+        - bank
+      description: delete a bank
+      operationId: deleteBank
+      summary: Deletes a bank
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: ID of bank to return
+          format: byte16
+          in: path
+          name: bankId
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Bank"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Bank not found
+      security:
+        - api_key: []
+      tags:
+        - bank
+      description: Returns a single bank
+      operationId: getBankByUUID
+      summary: Find bank by uuid
+  /card:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Create a new card in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewCard"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Card"
+        "400":
+          description: Invalid input
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - card
+      description: Add a new card to the base
+      operationId: addCard
+      summary: Add a new card
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Update an existent card in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Card"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Card"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Card not found
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - card
+      description: Update an existing card by uuid
+      operationId: updateCard
+      summary: Update an existing card
+  "/card/{cardNumber}":
+    delete:
+      parameters:
+        - description: Card number to delete
+          format: uint64
+          in: path
+          name: cardNumber
+          required: true
+          type: integer
+      responses:
+        "400":
+          description: Invalid card value
+      security:
+        - api_key: []
+      tags:
+        - card
+      description: delete a card
+      operationId: deleteCard
+      summary: Deletes a card
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: Number of card to return
+          format: uint64
+          in: path
+          name: cardNumber
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Card"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Card not found
+      security:
+        - api_key: []
+      tags:
+        - card
+      description: Returns a single card
+      operationId: getCardByNumber
+      summary: Find card by number
+  /user:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Create a new user in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewUser"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: Invalid input
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - user
+      description: Add a new user to the base
+      operationId: addUser
+      summary: Add a new user
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - description: Update an existent user in the base
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "422":
+          description: Validation exception
+      security:
+        - api_key: []
+      tags:
+        - user
+      description: Update an existing user by uuid
+      operationId: updateUser
+      summary: Update an existing user
+  "/user/{userId}":
+    delete:
+      parameters:
+        - description: User uuid to delete
+          format: byte16
+          in: path
+          name: userId
+          required: true
+          type: integer
+      responses:
+        "400":
+          description: Invalid user value
+      security:
+        - api_key: []
+      tags:
+        - user
+      description: delete a user
+      operationId: deleteUser
+      summary: Deletes a user
+    get:
+      produces:
+        - application/json
+      parameters:
+        - description: ID of user to return
+          format: byte16
+          in: path
+          name: userId
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+      security:
+        - api_key: []
+      tags:
+        - user
+      description: Returns a single user
+      operationId: getUserByUUID
+      summary: Find user by uuid
+definitions:
+  Bank:
+    properties:
+      address:
+        example: "Moscow, Kremlin"
+        type: string
+      bik:
+        example: 044525974
+        format: uint32
+        type: integer
+      name:
+        example: Main Bank
+        type: string
+      telephone:
+        example: 565-56-56
+        type: string
+      uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+    type: object
+  Card:
+    properties:
+      bank_uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+      cvs:
+        example: "109"
+        type: string
+      number:
+        example: 4242424242424242
+        format: uint64
+        type: integer
+      password:
+        example: "12345"
+        type: string
+      user_name:
+        example: JOHN DOE
+        type: string
+      user_uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+      valid:
+        example: 03/23
+        type: string
+    type: object
+  NewBank:
+    properties:
+      address:
+        example: "Moscow, Kremlin"
+        type: string
+      bik:
+        example: 044525974
+        format: uint32
+        type: integer
+      name:
+        example: Main Bank
+        type: string
+      telephone:
+        example: 565-56-56
+        type: string
+    type: object
+  NewCard:
+    properties:
+      bank_uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+      cvs:
+        example: "109"
+        type: string
+      number:
+        example: 4242424242424242
+        format: uint64
+        type: integer
+      password:
+        example: "12345"
+        type: string
+      user_name:
+        example: JOHN DOE
+        type: string
+      user_uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+      valid:
+        example: 03/23
+        type: string
+    type: object
+  NewUser:
+    properties:
+      email:
+        example: john@email.com
+        type: string
+      first_name:
+        example: John
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      login:
+        example: login
+        type: string
+      password:
+        example: "12345"
+        type: string
+      telephone:
+        example: "12345"
+        type: string
+    type: object
+  User:
+    properties:
+      email:
+        example: john@email.com
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      login:
+        example: login
+        type: string
+      name:
+        example: John
+        type: string
+      password:
+        example: "12345"
+        type: string
+      telephone:
+        example: "12345"
+        type: string
+      uuid:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        format: byte16
+        type: integer
+    type: object
+securityDefinitions:
+  api_key:
+    in: header
+    name: api_key
+    type: apiKey
+tags:
+  - description: users operation
+    name: user
+  - description: banks operation
+    name: bank
+  - description: cards operation
+    name: card
+x-components: {}
