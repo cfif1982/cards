@@ -9,14 +9,14 @@ import (
 	// "os"
 	// flags "github.com/jessevdk/go-flags"
 
-	"cards/internal/config"
-	"cards/internal/controller"
-	bankHandlers "cards/internal/infrastructure/handlers/bank"
-	bankRepo "cards/internal/infrastructure/repositories/bank"
+	"github.com/cfif1982/cards/internal/config"
+	"github.com/cfif1982/cards/internal/controller"
+	bankHandlers "github.com/cfif1982/cards/internal/infrastructure/handlers/bank"
+	bankRepo "github.com/cfif1982/cards/internal/infrastructure/repositories/bank"
 
-	"cards/internal/infrastructure/swagger/restapi"
-	"cards/internal/infrastructure/swagger/restapi/operations"
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
 
 	"github.com/go-openapi/loads"
 )

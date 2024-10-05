@@ -1,10 +1,11 @@
 package bank
 
 import (
-	"cards/internal/domain/bank"
 	"context"
 	"errors"
 	"time"
+
+	"github.com/cfif1982/cards/internal/domain/bank"
 
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"cards/internal/domain/bank"
-	respBank "cards/internal/infrastructure/swagger/models"
+	"github.com/cfif1982/cards/internal/domain/bank"
+	respBank "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
 
 	"github.com/google/uuid"
 )

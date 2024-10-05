@@ -10,10 +10,10 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"cards/internal/infrastructure/swagger/restapi/operations"
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
-	"cards/internal/infrastructure/swagger/restapi/operations/card"
-	"cards/internal/infrastructure/swagger/restapi/operations/user"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/card"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
 )
 
 //go:generate swagger generate server --target ..\..\swagger --name Cards --spec ..\..\..\..\swagger.yaml --principal interface{}

@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"cards/internal/controller"
 	"log/slog"
+
+	"github.com/cfif1982/cards/internal/controller"
 )
 
 // TODO: могу ли я перенести этот файл в папку handlers и сделать его общим для всех хэндлеров в подпаках?

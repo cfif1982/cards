@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"cards/internal/infrastructure/repositories/bank"
-	respBank "cards/internal/infrastructure/swagger/models"
 	"log/slog"
+
+	"github.com/cfif1982/cards/internal/infrastructure/repositories/bank"
+	respBank "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
 )
 
 type controller struct {

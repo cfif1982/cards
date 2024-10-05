@@ -1,4 +1,4 @@
-module cards
+module github.com/cfif1982/cards
 
 go 1.22.1
 

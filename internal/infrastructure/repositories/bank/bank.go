@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"cards/internal/domain/bank"
+	"github.com/cfif1982/cards/internal/domain/bank"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose"

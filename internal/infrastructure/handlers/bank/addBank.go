@@ -3,7 +3,7 @@ package handlers
 import (
 	"strconv"
 
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
 
 	"github.com/go-openapi/runtime/middleware" // для хэндлера нужна
 )

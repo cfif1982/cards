@@ -19,9 +19,9 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
-	"cards/internal/infrastructure/swagger/restapi/operations/card"
-	"cards/internal/infrastructure/swagger/restapi/operations/user"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/card"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
 )
 
 // NewCardsAPI creates a new Cards instance

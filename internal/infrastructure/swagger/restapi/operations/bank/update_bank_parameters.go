@@ -14,7 +14,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"cards/internal/infrastructure/swagger/models"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/models"
 )
 
 // NewUpdateBankParams creates a new UpdateBankParams object
