@@ -1,18 +1,18 @@
-package handlers
+package bank
 
 import (
 	"strconv"
 
-	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
-
 	"github.com/go-openapi/runtime/middleware" // для хэндлера нужна
+
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
 )
 
 // Хэндлер должен иметь вид: func(params bank.AddBankParams, principal interface{}) middleware.Responder
 // здесь params bank.AddBankParams - параметры запроса.
 // В Swagger-сгенерированных хэндлерах, параметр principal типа interface{} часто используется для передачи информации о текущем пользователе или клиенте,
 // который выполняет запрос
-func (h *Handlers) AddBankHandler(params bank.AddBankParams, principal interface{}) middleware.Responder {
+func (h *bankHandlers) Add(params bank.AddBankParams, principal interface{}) middleware.Responder {
 	// в yaml описано, что данному запросу поступает в теле данные вида NewBank:
 	// - description: Create a new bank in the base
 	//         in: body
@@ -35,12 +35,7 @@ func (h *Handlers) AddBankHandler(params bank.AddBankParams, principal interface
 
 	// вызываем метод из контроллера, т.к. мы не можем напрямую работать с репозиторием
 	//*********************************************************************************
-	result, err := h.controller.AddBank(
-		bankData.Name,
-		bankData.Address,
-		bankData.Telephone,
-		bankData.Bik,
-	)
+	result, err := h.controller.AddBank(bankData)
 
 	// TODO: пока не сделал нормальный код на этот случай
 	if err != nil {

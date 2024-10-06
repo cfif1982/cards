@@ -3,25 +3,23 @@ package controller
 import (
 	"log/slog"
 
-	"github.com/cfif1982/cards/internal/infrastructure/repositories/bank"
-	respBank "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
+	swgModels "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
+	bankRepo "github.com/cfif1982/cards/internal/repositories/bank"
+	"github.com/cfif1982/cards/internal/useCases/bank"
 )
 
 type controller struct {
-	log      *slog.Logger
-	bankRepo bank.BankRepo
+	log          *slog.Logger
+	bankUseCases bank.UseCases
 }
 
 type Controller interface {
-	AddBank(
-		name, address, telephone string,
-		bik uint32,
-	) (*respBank.Bank, error)
+	AddBank(data *swgModels.NewBank) (*swgModels.Bank, error)
 }
 
-func NewController(log *slog.Logger, bankRepo bank.BankRepo) Controller {
+func NewController(log *slog.Logger, bankRepo bankRepo.BankRepo) Controller {
 	return &controller{
-		log:      log,
-		bankRepo: bankRepo,
+		log:          log,
+		bankUseCases: bank.NewUseCases(log, bankRepo),
 	}
 }

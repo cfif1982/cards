@@ -5,23 +5,22 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cfif1982/cards/internal/domain/bank"
-
+	sq "github.com/Masterminds/squirrel"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	sq "github.com/Masterminds/squirrel"
+	"github.com/cfif1982/cards/internal/useCases/models"
 )
 
 // добавить банк
-func (b *bankRepo) AddBank(bank *bank.Bank) error {
+func (b *bankRepo) AddBank(bank *models.Bank) error {
 	// настраиваем squirrel для работы с postgres
 	psq := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 	// создаем запрос на добавление банка
 	query, args, _ := psq.
 		Insert("banks").Columns("uuid", "name", "address", "bik", "telephone").
-		Values(bank.UUID(), bank.Name(), bank.Address(), bank.BIK(), bank.Telephone()).
+		Values(bank.UUID, bank.Name, bank.Address, bank.BIK, bank.Telephone).
 		ToSql()
 
 	// создаю контекст для запроса

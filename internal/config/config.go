@@ -8,13 +8,21 @@ import (
 )
 
 type Config struct {
-	Env    string `yaml:"env" env:"Env" env-default:"local"`
-	Server `yaml:"server"`
+	Env      string `yaml:"env" env:"Env" env-default:"local"`
+	Server   `yaml:"server"`
+	Database `yaml:"database"`
 }
 
 type Server struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
+}
+
+type Database struct {
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Host     string `yaml:"host"`
+	Table    string `yaml:"table"`
 }
 
 func MustLoad() *Config {

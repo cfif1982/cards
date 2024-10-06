@@ -2,14 +2,16 @@ package bank
 
 import (
 	"database/sql"
+	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
 
-	"github.com/cfif1982/cards/internal/domain/bank"
-
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose"
+
+	"github.com/cfif1982/cards/internal/config"
+	"github.com/cfif1982/cards/internal/useCases/models"
 )
 
 type bankRepo struct {
@@ -18,10 +20,15 @@ type bankRepo struct {
 }
 
 type BankRepo interface {
-	AddBank(bank *bank.Bank) error
+	AddBank(bank *models.Bank) error
 }
 
-func NewBankRepo(log *slog.Logger, databaseDSN string) (BankRepo, error) {
+func NewBankRepo(log *slog.Logger, cfg *config.Config) (BankRepo, error) {
+	// DSN для СУБД
+	// Не стал делать общую БД для всех репозиториев, т.к. я могу захотеть для разных репозиториев использолвать разные БД
+	// Поэтому саму БД храню в репозитории
+	databaseDSN := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Table)
+
 	db, err := sql.Open("pgx", databaseDSN)
 	if err != nil {
 		return nil, err
