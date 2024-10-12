@@ -9,6 +9,7 @@ import (
 
 type UseCases interface {
 	Add(name, address, telephone string, bik uint32) (*models.Bank, error)
+	GetByID(bankID int64) (*models.Bank, error)
 }
 
 type bankUseCases struct {

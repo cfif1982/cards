@@ -1,4 +1,4 @@
-package bank
+package user
 
 import (
 	"database/sql"
@@ -14,17 +14,17 @@ import (
 	"github.com/cfif1982/cards/internal/useCases/models"
 )
 
-type bankRepo struct {
+type userRepo struct {
 	log *slog.Logger
 	db  *sql.DB
 }
 
-type BankRepo interface {
-	AddBank(bank *models.Bank) error
-	GetBankByID(bankID int64) (*models.Bank, error)
+type UserRepo interface {
+	AddUser(user *models.User) error
+	GetUserByID(userID int64) (*models.User, error)
 }
 
-func NewBankRepo(log *slog.Logger, cfg *config.Config) (BankRepo, error) {
+func NewUserRepo(log *slog.Logger, cfg *config.Config) (UserRepo, error) {
 	// DSN для СУБД
 	// Не стал делать общую БД для всех репозиториев, т.к. я могу захотеть для разных репозиториев использолвать разные БД
 	// Поэтому саму БД храню в репозитории
@@ -37,7 +37,7 @@ func NewBankRepo(log *slog.Logger, cfg *config.Config) (BankRepo, error) {
 
 	// начинаю миграцию
 	// Т.к. делаю миграцию, то не нужно пинговать базу
-	log.Info("Start migrating bank database")
+	log.Info("Start migrating user database")
 
 	if err := goose.SetDialect("postgres"); err != nil {
 		log.Info(err.Error())
@@ -57,9 +57,9 @@ func NewBankRepo(log *slog.Logger, cfg *config.Config) (BankRepo, error) {
 		log.Info(err.Error() + ": " + exPath)
 	}
 
-	log.Info("migrating bank database finished")
+	log.Info("migrating user database finished")
 
-	return &bankRepo{
+	return &userRepo{
 		log: log,
 		db:  db,
 	}, nil

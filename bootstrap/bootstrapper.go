@@ -14,6 +14,7 @@ import (
 	"github.com/cfif1982/cards/internal/controller"
 	"github.com/cfif1982/cards/internal/infrastructure/handlers"
 	bankRepo "github.com/cfif1982/cards/internal/repositories/bank"
+	userRepo "github.com/cfif1982/cards/internal/repositories/user"
 )
 
 type Bootstraper struct {
@@ -35,12 +36,15 @@ func (b *Bootstraper) Run() {
 	// создаем репозиторий для банка
 	bankRepo, err := bankRepo.NewBankRepo(b.log, b.cfg)
 
+	// создаем репозиторий для юзера
+	userRepo, err := userRepo.NewUserRepo(b.log, b.cfg)
+
 	if err != nil {
 		panic("Bank Repo error: " + err.Error())
 	}
 
 	// создаем контроллер
-	b.controller = controller.NewController(b.log, bankRepo)
+	b.controller = controller.NewController(b.log, bankRepo, userRepo)
 
 	// создаем хэндлер
 	b.handlers = handlers.NewHandlers(b.log, b.controller)

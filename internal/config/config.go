@@ -2,10 +2,17 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
+	"github.com/kelseyhightower/envconfig"
 )
+
+const cfgTypeYAML = "YAML"
+const cfgTypeENV = "ENV"
+const environmentPrefix = "CARD"
 
 type Config struct {
 	Env      string `yaml:"env" env:"Env" env-default:"local"`
@@ -22,26 +29,47 @@ type Database struct {
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
 	Host     string `yaml:"host"`
-	Table    string `yaml:"table"`
+	Name     string `yaml:"table"`
 }
 
 func MustLoad() *Config {
-	path := fetchConfigPath() // получаем путь к файлу конфига
-	if path == "" {
-		panic("config path is empty")
-	}
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		panic("config file does not exist: " + path)
-	}
-
 	var cfg Config
 
-	if err := cleanenv.ReadConfig(path, &cfg); err != nil {
-		panic("failed to read config: " + err.Error())
-	}
+	// указываем откуда брать настройки
+	var currentCfgType = cfgTypeENV
 
-	return &cfg
+	// если настройки берутся из yaml файла
+	if currentCfgType == cfgTypeYAML {
+		path := fetchConfigPath() // получаем путь к файлу конфига
+		if path == "" {
+			panic("config path is empty")
+		}
+
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			panic("config file does not exist: " + path)
+		}
+
+		if err := cleanenv.ReadConfig(path, &cfg); err != nil {
+			panic("failed to read config: " + err.Error())
+		}
+
+		return &cfg
+		// если настройки берутся из env
+	} else {
+		// загружаем файл настроек для среды окружения.
+		// считываем этот файл и инициализируем соответсвтующие переменные среды окружения
+		err := godotenv.Load("config.env")
+		if err != nil {
+			fmt.Println("error while loading config.env file")
+		}
+
+		// cfg := &Config{}
+		if err = envconfig.Process(environmentPrefix, &cfg); err != nil {
+			panic("error while loading environment")
+		}
+
+		return &cfg
+	}
 }
 
 // Получаем путь к файлу config из флага или среды окружения
