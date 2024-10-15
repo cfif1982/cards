@@ -3,23 +3,23 @@ package user
 import (
 	"github.com/google/uuid"
 
-	"github.com/cfif1982/cards/internal/useCases/models"
+	"github.com/cfif1982/cards/internal/models"
 )
 
 // Создаем новый объект. Эта функция нужна для работы в других пакетах, когда нужно получить данные
 // и поместить их в объект (это про DDD архитектуру).
-func (u *userUseCases) Add(name, lastName, email, telephone, login, password string) (*models.User, error) {
+func (u *userUseCase) Add(newUser *models.NewUser) (*models.User, error) {
 	// генерируем uuid - для дальнейшей вставки в БД
 	uuid := uuid.New()
 
 	user := models.User{
-		UUID:      uuid,
-		Name:      name,
-		LastName:  lastName,
-		Email:     email,
-		Telephone: telephone,
-		Login:     login,
-		Password:  password,
+		ID:        uuid,
+		Name:      newUser.Name,
+		LastName:  newUser.LastName,
+		Email:     newUser.Email,
+		Telephone: newUser.Telephone,
+		Login:     newUser.Login,
+		Password:  newUser.Password,
 	}
 
 	// сохраняем его в БД

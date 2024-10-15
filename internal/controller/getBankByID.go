@@ -2,10 +2,14 @@ package controller
 
 import (
 	swgModels "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
+	"github.com/google/uuid"
 )
 
-func (c *controller) GetBankByID(bankID int64) (*swgModels.Bank, error) {
-	bank, err := c.bankUseCases.GetByID(bankID)
+func (c *controller) GetBankByID(bankID string) (*swgModels.Bank, error) {
+	// конвертируем строку в uuid
+	bankUUID, _ := uuid.Parse(bankID)
+
+	bank, err := c.bankUseCases.GetByID(bankUUID)
 
 	if err != nil {
 		return nil, err
@@ -14,7 +18,7 @@ func (c *controller) GetBankByID(bankID int64) (*swgModels.Bank, error) {
 	// вернуть нужно структуру банка для ответа
 	// формируем структуру для ответа. С ней же будем рабоать для вставки в бд
 	result := swgModels.Bank{
-		UUID:      int64(bank.UUID.ID()),
+		ID:        bank.ID.String(),
 		Address:   bank.Address,
 		Bik:       bank.BIK,
 		Name:      bank.Name,

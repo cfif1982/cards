@@ -2,6 +2,7 @@ package bank
 
 import (
 	"github.com/go-openapi/runtime/middleware" // для хэндлера нужна
+	"github.com/google/uuid"
 
 	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
 )
@@ -10,7 +11,7 @@ import (
 // здесь params bank.AddBankParams - параметры запроса.
 // В Swagger-сгенерированных хэндлерах, параметр principal типа interface{} часто используется для передачи информации о текущем пользователе или клиенте,
 // который выполняет запрос
-func (h *bankHandlers) GetById(params bank.GetBankByUUIDParams, principal interface{}) middleware.Responder {
+func (h *bankHandlers) GetById(params bank.GetBankByIDParams, principal interface{}) middleware.Responder {
 	// в yaml описано, что данному запросу поступает в теле данные вида NewBank:
 	// - description: Create a new bank in the base
 	//         in: body
@@ -21,9 +22,9 @@ func (h *bankHandlers) GetById(params bank.GetBankByUUIDParams, principal interf
 	// получаем данные из запроса
 	bankID := params.BankID
 
-	// Если нет имени банка, то возвращаем код 400: Invalid input
-	if bankID == 0 {
-		return bank.NewGetBankByUUIDBadRequest()
+	// проверяем правильность uuid
+	if _, err := uuid.Parse(bankID); err != nil {
+		return bank.NewGetBankByIDBadRequest()
 	}
 
 	// вызываем метод из контроллера, т.к. мы не можем напрямую работать с репозиторием

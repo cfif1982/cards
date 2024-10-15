@@ -12,7 +12,7 @@ type Handlers struct {
 	log  *slog.Logger
 	Bank bank.Handlers
 	User user.Handlers
-	// TODO: добавить хэндлеры для User и Card
+	// TODO: добавить хэндлеры для Card
 }
 
 func NewHandlers(log *slog.Logger, controller controller.Controller) *Handlers {

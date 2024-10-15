@@ -74,11 +74,10 @@ paths:
     delete:
       parameters:
         - description: Bank uuid to delete
-          format: byte16
           in: path
           name: bankId
           required: true
-          type: integer
+          type: string
       responses:
         "400":
           description: Invalid bank value
@@ -94,11 +93,10 @@ paths:
         - application/json
       parameters:
         - description: ID of bank to return
-          format: byte16
           in: path
           name: bankId
           required: true
-          type: integer
+          type: string
       responses:
         "200":
           description: successful operation
@@ -113,8 +111,8 @@ paths:
       tags:
         - bank
       description: Returns a single bank
-      operationId: getBankByUUID
-      summary: Find bank by uuid
+      operationId: getBankByID
+      summary: Find bank by id
   /card:
     post:
       consumes:
@@ -282,11 +280,10 @@ paths:
     delete:
       parameters:
         - description: User uuid to delete
-          format: byte16
           in: path
           name: userId
           required: true
-          type: integer
+          type: string
       responses:
         "400":
           description: Invalid user value
@@ -302,11 +299,10 @@ paths:
         - application/json
       parameters:
         - description: ID of user to return
-          format: byte16
           in: path
           name: userId
           required: true
-          type: integer
+          type: string
       responses:
         "200":
           description: successful operation
@@ -321,11 +317,14 @@ paths:
       tags:
         - user
       description: Returns a single user
-      operationId: getUserByUUID
-      summary: Find user by uuid
+      operationId: getUserByID
+      summary: Find user by id
 definitions:
   Bank:
     properties:
+      id:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        type: string
       address:
         example: "Moscow, Kremlin"
         type: string
@@ -339,17 +338,18 @@ definitions:
       telephone:
         example: 565-56-56
         type: string
-      uuid:
-        example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
     type: object
   Card:
     properties:
-      bank_uuid:
+      id:
         example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
+        type: string
+      bank_id:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        type: string
+      user_id:
+        example: 53aa35c8-e659-44b2-882f-f6056e443c99
+        type: string
       cvs:
         example: "109"
         type: string
@@ -363,10 +363,7 @@ definitions:
       user_name:
         example: JOHN DOE
         type: string
-      user_uuid:
-        example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
+
       valid:
         example: 03/23
         type: string
@@ -389,10 +386,9 @@ definitions:
     type: object
   NewCard:
     properties:
-      bank_uuid:
+      bank_id:
         example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
+        type: string
       cvs:
         example: "109"
         type: string
@@ -406,10 +402,9 @@ definitions:
       user_name:
         example: JOHN DOE
         type: string
-      user_uuid:
+      user_id:
         example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
+        type: string
       valid:
         example: 03/23
         type: string
@@ -455,10 +450,9 @@ definitions:
       telephone:
         example: "12345"
         type: string
-      uuid:
+      id:
         example: 53aa35c8-e659-44b2-882f-f6056e443c99
-        format: byte16
-        type: integer
+        type: string
     type: object
 securityDefinitions:
   api_key:

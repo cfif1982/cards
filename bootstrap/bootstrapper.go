@@ -9,6 +9,7 @@ import (
 	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi"
 	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations"
 	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
 
 	"github.com/cfif1982/cards/internal/config"
 	"github.com/cfif1982/cards/internal/controller"
@@ -99,4 +100,8 @@ func (b *Bootstraper) setupHandlers(api *operations.CardsAPI) {
 	// т.к. при создании этих обработчиков в yaml я использовал tag
 	// поэтому нужно брать конкретный пакет: Bank, Card, User и в нем выбирать нужный хэндлер
 	api.BankAddBankHandler = bank.AddBankHandlerFunc(b.handlers.Bank.Add)
+	api.BankGetBankByIDHandler = bank.GetBankByIDHandlerFunc(b.handlers.Bank.GetById)
+
+	api.UserAddUserHandler = user.AddUserHandlerFunc(b.handlers.User.Add)
+	api.UserGetUserByIDHandler = user.GetUserByIDHandlerFunc(b.handlers.User.GetById)
 }

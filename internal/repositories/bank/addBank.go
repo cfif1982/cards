@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/cfif1982/cards/internal/useCases/models"
+	"github.com/cfif1982/cards/internal/models"
 )
 
 // добавить банк
@@ -19,8 +19,8 @@ func (b *bankRepo) AddBank(bank *models.Bank) error {
 
 	// создаем запрос на добавление банка
 	query, args, _ := psq.
-		Insert("banks").Columns("uuid", "name", "address", "bik", "telephone").
-		Values(bank.UUID, bank.Name, bank.Address, bank.BIK, bank.Telephone).
+		Insert("banks").Columns("id", "name", "address", "bik", "telephone").
+		Values(bank.ID, bank.Name, bank.Address, bank.BIK, bank.Telephone).
 		ToSql()
 
 	// создаю контекст для запроса

@@ -2,19 +2,22 @@ package controller
 
 import (
 	swgModels "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
+	"github.com/cfif1982/cards/internal/models"
 )
 
 func (c *controller) AddBank(data *swgModels.NewBank) (*swgModels.Bank, error) {
-	bank, err := c.bankUseCases.Add(data.Name, data.Address, data.Telephone, data.Bik)
+	// конвертируем данные из swagger в domain
+	newBank := models.ConvertSwaggerToDomainNewBank(data)
+
+	bank, err := c.bankUseCases.Add(newBank)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// вернуть нужно структуру банка для ответа
-	// формируем структуру для ответа. С ней же будем рабоать для вставки в бд
+	// конвертируем банк из структуры domain в структуру swagger для ответа.
 	result := swgModels.Bank{
-		UUID:      int64(bank.UUID.ID()),
+		ID:        bank.ID.String(),
 		Address:   bank.Address,
 		Bik:       bank.BIK,
 		Name:      bank.Name,

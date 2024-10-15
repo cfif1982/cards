@@ -10,13 +10,11 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
-
-	"github.com/go-openapi/swag"
 )
 
 // DeleteUserURL generates an URL for the delete user operation
 type DeleteUserURL struct {
-	UserID int64
+	UserID string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -44,7 +42,7 @@ func (o *DeleteUserURL) Build() (*url.URL, error) {
 
 	var _path = "/user/{userId}"
 
-	userID := swag.FormatInt64(o.UserID)
+	userID := o.UserID
 	if userID != "" {
 		_path = strings.Replace(_path, "{userId}", userID, -1)
 	} else {

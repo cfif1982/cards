@@ -11,6 +11,7 @@ import (
 
 type Handlers interface {
 	Add(params bank.AddBankParams, principal interface{}) middleware.Responder
+	GetById(params bank.GetBankByIDParams, principal interface{}) middleware.Responder
 }
 
 // закрываем структуру и делаем для взаимодействия с ней интерфейс

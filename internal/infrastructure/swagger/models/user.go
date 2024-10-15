@@ -21,6 +21,10 @@ type User struct {
 	// Example: john@email.com
 	Email string `json:"email,omitempty"`
 
+	// id
+	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
+	ID string `json:"id,omitempty"`
+
 	// last name
 	// Example: Doe
 	LastName string `json:"last_name,omitempty"`
@@ -40,10 +44,6 @@ type User struct {
 	// telephone
 	// Example: 12345
 	Telephone string `json:"telephone,omitempty"`
-
-	// uuid
-	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
-	UUID int64 `json:"uuid,omitempty"`
 }
 
 // Validate validates this user

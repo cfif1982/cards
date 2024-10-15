@@ -18,10 +18,10 @@ type controller struct {
 
 type Controller interface {
 	AddBank(data *swgModels.NewBank) (*swgModels.Bank, error)
-	GetBankByID(bankID int64) (*swgModels.Bank, error)
+	GetBankByID(bankID string) (*swgModels.Bank, error)
 
 	AddUser(data *swgModels.NewUser) (*swgModels.User, error)
-	GetUserByID(userID int64) (*swgModels.User, error)
+	GetUserByID(userID string) (*swgModels.User, error)
 }
 
 func NewController(log *slog.Logger, bankRepo bankRepo.BankRepo, userRepo userRepo.UserRepo) Controller {

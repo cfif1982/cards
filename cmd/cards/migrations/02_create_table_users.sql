@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS users(
-  uuid UUID PRIMARY KEY,
+  id UUID PRIMARY KEY,
   name      TEXT,
 	last_name   TEXT,
 	email       TEXT,

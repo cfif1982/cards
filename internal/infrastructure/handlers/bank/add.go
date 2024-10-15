@@ -23,13 +23,14 @@ func (h *bankHandlers) Add(params bank.AddBankParams, principal interface{}) mid
 	// получаем данные из запроса
 	bankData := params.Body
 
-	// Если нет имени банка, то возвращаем код 400: Invalid input
+	// Если нет имени банка, то возвращаем код 400: BadRequest
 	if bankData.Name == "" {
 		return bank.NewAddBankBadRequest()
 	}
 
-	// Если длина БИК банка != 9 , то возвращаем код 422: Validation exception
-	if len(strconv.Itoa(int(bankData.Bik))) != 9 {
+	// Если длина БИК банка != 9 , то возвращаем код 422: UnprocessableEntity
+	// это для примера ошибки, такую проверку нужно делатьт в useCase
+	if len(strconv.Itoa(int(bankData.Bik))) < 8 {
 		return bank.NewAddBankUnprocessableEntity()
 	}
 

@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/cfif1982/cards/internal/useCases/models"
+	"github.com/cfif1982/cards/internal/models"
 )
 
 // добавить банк
@@ -19,8 +19,8 @@ func (u *userRepo) AddUser(user *models.User) error {
 
 	// создаем запрос на добавление юзера
 	query, args, _ := psq.
-		Insert("users").Columns("uuid", "name", "last_name", "email", "telephone", "login", "password").
-		Values(user.UUID, user.Name, user.LastName, user.Email, user.Telephone, user.Login, user.Password).
+		Insert("users").Columns("id", "name", "last_name", "email", "telephone", "login", "password").
+		Values(user.ID, user.Name, user.LastName, user.Email, user.Telephone, user.Login, user.Password).
 		ToSql()
 
 	// создаю контекст для запроса

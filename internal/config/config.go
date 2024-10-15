@@ -63,7 +63,6 @@ func MustLoad() *Config {
 			fmt.Println("error while loading config.env file")
 		}
 
-		// cfg := &Config{}
 		if err = envconfig.Process(environmentPrefix, &cfg); err != nil {
 			panic("error while loading environment")
 		}
