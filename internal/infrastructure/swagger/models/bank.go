@@ -25,6 +25,10 @@ type Bank struct {
 	// Example: 44525974
 	Bik uint32 `json:"bik,omitempty"`
 
+	// id
+	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
+	ID string `json:"id,omitempty"`
+
 	// name
 	// Example: Main Bank
 	Name string `json:"name,omitempty"`
@@ -32,10 +36,6 @@ type Bank struct {
 	// telephone
 	// Example: 565-56-56
 	Telephone string `json:"telephone,omitempty"`
-
-	// uuid
-	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
-	UUID int64 `json:"uuid,omitempty"`
 }
 
 // Validate validates this bank

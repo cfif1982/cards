@@ -1,43 +1,27 @@
 package controller
 
 import (
-	"cards/internal/domain/bank"
-	respBank "cards/internal/infrastructure/swagger/models"
-
-	"github.com/google/uuid"
+	swgModels "github.com/cfif1982/cards/internal/infrastructure/swagger/models"
+	"github.com/cfif1982/cards/internal/models"
 )
 
-func (c *controller) AddBank(
-	name, address, telephone string,
-	bik uint32,
-) (*respBank.Bank, error) {
+func (c *controller) AddBank(data *swgModels.NewBank) (*swgModels.Bank, error) {
+	// конвертируем данные из swagger в domain
+	newBank := models.ConvertSwaggerToDomainNewBank(data)
 
-	// генерируем uuid - для дальнейшей вставки в БД
-	uuid := uuid.New()
+	bank, err := c.bankUseCases.Add(newBank)
 
-	// создаем объект банк
-	bank := bank.CreateBank(
-		uuid,
-		name,
-		address,
-		telephone,
-		bik,
-	)
-
-	// сохраняем его в БД
-	err := c.bankRepo.AddBank(bank)
 	if err != nil {
 		return nil, err
 	}
 
-	// вернуть нужно структуру банка для ответа
-	// формируем структуру для ответа. С ней же будем рабоать для вставки в бд
-	result := respBank.Bank{
-		UUID:      int64(bank.UUID().ID()),
-		Address:   bank.Address(),
-		Bik:       bank.BIK(),
-		Name:      bank.Name(),
-		Telephone: bank.Telephone(),
+	// конвертируем банк из структуры domain в структуру swagger для ответа.
+	result := swgModels.Bank{
+		ID:        bank.ID.String(),
+		Address:   bank.Address,
+		Bik:       bank.BIK,
+		Name:      bank.Name,
+		Telephone: bank.Telephone,
 	}
 
 	return &result, nil

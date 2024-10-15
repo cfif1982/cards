@@ -19,9 +19,9 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
-	"cards/internal/infrastructure/swagger/restapi/operations/card"
-	"cards/internal/infrastructure/swagger/restapi/operations/user"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/card"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
 )
 
 // NewCardsAPI creates a new Cards instance
@@ -64,14 +64,14 @@ func NewCardsAPI(spec *loads.Document) *CardsAPI {
 		UserDeleteUserHandler: user.DeleteUserHandlerFunc(func(params user.DeleteUserParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation user.DeleteUser has not yet been implemented")
 		}),
-		BankGetBankByUUIDHandler: bank.GetBankByUUIDHandlerFunc(func(params bank.GetBankByUUIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation bank.GetBankByUUID has not yet been implemented")
+		BankGetBankByIDHandler: bank.GetBankByIDHandlerFunc(func(params bank.GetBankByIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation bank.GetBankByID has not yet been implemented")
 		}),
 		CardGetCardByNumberHandler: card.GetCardByNumberHandlerFunc(func(params card.GetCardByNumberParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation card.GetCardByNumber has not yet been implemented")
 		}),
-		UserGetUserByUUIDHandler: user.GetUserByUUIDHandlerFunc(func(params user.GetUserByUUIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation user.GetUserByUUID has not yet been implemented")
+		UserGetUserByIDHandler: user.GetUserByIDHandlerFunc(func(params user.GetUserByIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation user.GetUserByID has not yet been implemented")
 		}),
 		BankUpdateBankHandler: bank.UpdateBankHandlerFunc(func(params bank.UpdateBankParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation bank.UpdateBank has not yet been implemented")
@@ -144,12 +144,12 @@ type CardsAPI struct {
 	CardDeleteCardHandler card.DeleteCardHandler
 	// UserDeleteUserHandler sets the operation handler for the delete user operation
 	UserDeleteUserHandler user.DeleteUserHandler
-	// BankGetBankByUUIDHandler sets the operation handler for the get bank by UUID operation
-	BankGetBankByUUIDHandler bank.GetBankByUUIDHandler
+	// BankGetBankByIDHandler sets the operation handler for the get bank by ID operation
+	BankGetBankByIDHandler bank.GetBankByIDHandler
 	// CardGetCardByNumberHandler sets the operation handler for the get card by number operation
 	CardGetCardByNumberHandler card.GetCardByNumberHandler
-	// UserGetUserByUUIDHandler sets the operation handler for the get user by UUID operation
-	UserGetUserByUUIDHandler user.GetUserByUUIDHandler
+	// UserGetUserByIDHandler sets the operation handler for the get user by ID operation
+	UserGetUserByIDHandler user.GetUserByIDHandler
 	// BankUpdateBankHandler sets the operation handler for the update bank operation
 	BankUpdateBankHandler bank.UpdateBankHandler
 	// CardUpdateCardHandler sets the operation handler for the update card operation
@@ -255,14 +255,14 @@ func (o *CardsAPI) Validate() error {
 	if o.UserDeleteUserHandler == nil {
 		unregistered = append(unregistered, "user.DeleteUserHandler")
 	}
-	if o.BankGetBankByUUIDHandler == nil {
-		unregistered = append(unregistered, "bank.GetBankByUUIDHandler")
+	if o.BankGetBankByIDHandler == nil {
+		unregistered = append(unregistered, "bank.GetBankByIDHandler")
 	}
 	if o.CardGetCardByNumberHandler == nil {
 		unregistered = append(unregistered, "card.GetCardByNumberHandler")
 	}
-	if o.UserGetUserByUUIDHandler == nil {
-		unregistered = append(unregistered, "user.GetUserByUUIDHandler")
+	if o.UserGetUserByIDHandler == nil {
+		unregistered = append(unregistered, "user.GetUserByIDHandler")
 	}
 	if o.BankUpdateBankHandler == nil {
 		unregistered = append(unregistered, "bank.UpdateBankHandler")
@@ -397,7 +397,7 @@ func (o *CardsAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/bank/{bankId}"] = bank.NewGetBankByUUID(o.context, o.BankGetBankByUUIDHandler)
+	o.handlers["GET"]["/bank/{bankId}"] = bank.NewGetBankByID(o.context, o.BankGetBankByIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -405,7 +405,7 @@ func (o *CardsAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/user/{userId}"] = user.NewGetUserByUUID(o.context, o.UserGetUserByUUIDHandler)
+	o.handlers["GET"]["/user/{userId}"] = user.NewGetUserByID(o.context, o.UserGetUserByIDHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

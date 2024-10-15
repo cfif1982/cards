@@ -2,3 +2,8 @@ env: "local" # local, prod
 server:
   host: localhost
   port: 8080
+database:
+  User: "postgres"
+  Password: "123"
+  Host: "localhost"
+  Table: "cards"

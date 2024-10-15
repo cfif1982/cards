@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"cards/internal/infrastructure/swagger/models"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/models"
 )
 
 // UpdateBankOKCode is the HTTP code returned for type UpdateBankOK
