@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"log"
 	"log/slog"
 
 	"github.com/go-openapi/loads"
@@ -14,9 +13,12 @@ import (
 	"github.com/cfif1982/cards/internal/config"
 	"github.com/cfif1982/cards/internal/controller"
 	"github.com/cfif1982/cards/internal/infrastructure/handlers"
+	"github.com/cfif1982/cards/internal/infrastructure/kafkacons"
 	bankRepo "github.com/cfif1982/cards/internal/repositories/bank"
 	userRepo "github.com/cfif1982/cards/internal/repositories/user"
 )
+
+const kafkaTopicName = "cards_topic"
 
 type Bootstraper struct {
 	cfg        *config.Config
@@ -24,6 +26,7 @@ type Bootstraper struct {
 	server     *restapi.Server
 	controller controller.Controller
 	handlers   *handlers.Handlers
+	consumer   *kafkacons.KafkaConsumer
 }
 
 func NewBootstraper(cfg *config.Config, log *slog.Logger) *Bootstraper {
@@ -55,7 +58,7 @@ func (b *Bootstraper) Run() {
 	// Загрузка спецификации Swagger
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 
 	// Создание нового экземпляра API
@@ -90,8 +93,21 @@ func (b *Bootstraper) Run() {
 
 	// Запуск сервера
 	if err = b.server.Serve(); err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
+
+	// Создаем слушателя кафки
+	b.consumer = kafkacons.NewKafkaConsumer(
+		b.log,
+		b.controller,
+		kafkaTopicName,
+		b.cfg.KafkaHost,
+	)
+	defer b.consumer.Close()
+
+	// запускаем слушателя сообщений от кафки
+	// TODO: сделать передачу канала на закрытие
+	b.consumer.Run()
 }
 
 // Привязываем свои хэндлеры к сгенерированным маршрутам.

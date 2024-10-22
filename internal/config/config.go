@@ -15,9 +15,10 @@ const cfgTypeENV = "ENV"
 const environmentPrefix = "CARD"
 
 type Config struct {
-	Env      string `yaml:"env" env:"Env" env-default:"local"`
-	Server   `yaml:"server"`
-	Database `yaml:"database"`
+	Env       string `yaml:"env" env:"Env" env-default:"local"`
+	Server    `yaml:"server"`
+	Database  `yaml:"database"`
+	KafkaHost string `yaml:"kafka_host"`
 }
 
 type Server struct {

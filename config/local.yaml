@@ -7,3 +7,4 @@ database:
   Password: "123"
   Host: "localhost"
   Table: "cards"
+kafka: localhost:9092
