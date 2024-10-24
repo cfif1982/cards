@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS banks(
-  uuid UUID PRIMARY KEY,
+  id UUID PRIMARY KEY,
   name      TEXT,
 	address   TEXT,
 	bik       int,

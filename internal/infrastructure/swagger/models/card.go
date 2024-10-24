@@ -17,13 +17,17 @@ import (
 // swagger:model Card
 type Card struct {
 
-	// bank uuid
+	// bank id
 	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
-	BankUUID int64 `json:"bank_uuid,omitempty"`
+	BankID string `json:"bank_id,omitempty"`
 
 	// cvs
 	// Example: 109
 	Cvs string `json:"cvs,omitempty"`
+
+	// id
+	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
+	ID string `json:"id,omitempty"`
 
 	// number
 	// Example: 4242424242424242
@@ -33,13 +37,13 @@ type Card struct {
 	// Example: 12345
 	Password string `json:"password,omitempty"`
 
+	// user id
+	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
+	UserID string `json:"user_id,omitempty"`
+
 	// user name
 	// Example: JOHN DOE
 	UserName string `json:"user_name,omitempty"`
-
-	// user uuid
-	// Example: 53aa35c8-e659-44b2-882f-f6056e443c99
-	UserUUID int64 `json:"user_uuid,omitempty"`
 
 	// valid
 	// Example: 03/23

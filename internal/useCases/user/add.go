@@ -1,0 +1,32 @@
+package user
+
+import (
+	"github.com/google/uuid"
+
+	"github.com/cfif1982/cards/internal/models"
+)
+
+// Создаем новый объект. Эта функция нужна для работы в других пакетах, когда нужно получить данные
+// и поместить их в объект (это про DDD архитектуру).
+func (u *userUseCase) Add(newUser *models.NewUser) (*models.User, error) {
+	// генерируем uuid - для дальнейшей вставки в БД
+	uuid := uuid.New()
+
+	user := models.User{
+		ID:        uuid,
+		Name:      newUser.Name,
+		LastName:  newUser.LastName,
+		Email:     newUser.Email,
+		Telephone: newUser.Telephone,
+		Login:     newUser.Login,
+		Password:  newUser.Password,
+	}
+
+	// сохраняем его в БД
+	err := u.userRepo.AddUser(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}

@@ -1,37 +1,32 @@
 package bootstrap
 
 import (
-	"fmt"
-	"log"
 	"log/slog"
 
-	// эти пакеты нужны для закоменченного когда ниже
-	// "os"
-	// flags "github.com/jessevdk/go-flags"
-
-	"cards/internal/config"
-	"cards/internal/controller"
-	bankHandlers "cards/internal/infrastructure/handlers/bank"
-	bankRepo "cards/internal/infrastructure/repositories/bank"
-
-	"cards/internal/infrastructure/swagger/restapi"
-	"cards/internal/infrastructure/swagger/restapi/operations"
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
-
 	"github.com/go-openapi/loads"
+
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
+
+	"github.com/cfif1982/cards/internal/config"
+	"github.com/cfif1982/cards/internal/controller"
+	"github.com/cfif1982/cards/internal/infrastructure/handlers"
+	"github.com/cfif1982/cards/internal/infrastructure/kafkacons"
+	bankRepo "github.com/cfif1982/cards/internal/repositories/bank"
+	userRepo "github.com/cfif1982/cards/internal/repositories/user"
 )
 
-const databaseUser = "postgres"
-const databasePassword = "123"
-const databaseHost = "localhost"
-const databaseTable = "cards"
+const kafkaTopicName = "cards_topic"
 
 type Bootstraper struct {
 	cfg        *config.Config
 	log        *slog.Logger
 	server     *restapi.Server
 	controller controller.Controller
-	handlers   *bankHandlers.Handlers
+	handlers   *handlers.Handlers
+	consumer   *kafkacons.KafkaConsumer
 }
 
 func NewBootstraper(cfg *config.Config, log *slog.Logger) *Bootstraper {
@@ -43,28 +38,27 @@ func NewBootstraper(cfg *config.Config, log *slog.Logger) *Bootstraper {
 
 func (b *Bootstraper) Run() {
 	// создаем репозиторий для банка
-	// DSN для СУБД
-	databaseDSN := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", databaseHost, databaseUser, databasePassword, databaseTable)
+	bankRepo, err := bankRepo.NewBankRepo(b.log, b.cfg)
 
-	// создаем сам репозиторий для банка
-	bankRepo, err := bankRepo.NewBankRepo(b.log, databaseDSN)
+	// создаем репозиторий для юзера
+	userRepo, err := userRepo.NewUserRepo(b.log, b.cfg)
 
 	if err != nil {
 		panic("Bank Repo error: " + err.Error())
 	}
 
 	// создаем контроллер
-	b.controller = controller.NewController(b.log, bankRepo)
+	b.controller = controller.NewController(b.log, bankRepo, userRepo)
 
 	// создаем хэндлер
-	b.handlers = bankHandlers.NewHandlers(b.log, b.controller)
+	b.handlers = handlers.NewHandlers(b.log, b.controller)
 
 	// Создаем swagger сервер
 	//*****************************************************
 	// Загрузка спецификации Swagger
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 
 	// Создание нового экземпляра API
@@ -73,35 +67,11 @@ func (b *Bootstraper) Run() {
 	// Создание сервера
 	b.server = restapi.NewServer(api)
 
-	b.server.Port = b.cfg.Port
-	b.server.Host = b.cfg.Host
+	b.server.Port = b.cfg.Server.Port
+	b.server.Host = b.cfg.Server.Host
 
 	// по завершении работы останавливаем сервер
 	defer b.server.Shutdown()
-
-	// TODO: не знаю зачем это нужно
-	/*
-		parser := flags.NewParser(server, flags.Default)
-		parser.ShortDescription = "cards"
-		parser.LongDescription = "This is a sample User's cards application based on the OpenAPI 2.0 specification."
-		server.ConfigureFlags()
-		for _, optsGroup := range api.CommandLineOptionsGroups {
-			_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)
-			if err != nil {
-				log.Fatalln(err)
-			}
-		}
-
-		if _, err := parser.Parse(); err != nil {
-			code := 1
-			if fe, ok := err.(*flags.Error); ok {
-				if fe.Type == flags.ErrHelp {
-					code = 0
-				}
-			}
-			os.Exit(code)
-		}
-	*/
 
 	// Привязываем свои хэндлеры к сгенерированным маршрутам
 	b.setupHandlers(api)
@@ -123,8 +93,21 @@ func (b *Bootstraper) Run() {
 
 	// Запуск сервера
 	if err = b.server.Serve(); err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
+
+	// Создаем слушателя кафки
+	b.consumer = kafkacons.NewKafkaConsumer(
+		b.log,
+		b.controller,
+		kafkaTopicName,
+		b.cfg.KafkaHost,
+	)
+	defer b.consumer.Close()
+
+	// запускаем слушателя сообщений от кафки
+	// TODO: сделать передачу канала на закрытие
+	b.consumer.Run()
 }
 
 // Привязываем свои хэндлеры к сгенерированным маршрутам.
@@ -132,5 +115,9 @@ func (b *Bootstraper) setupHandlers(api *operations.CardsAPI) {
 	// все хэндлеры в моем случае разделены на группы,
 	// т.к. при создании этих обработчиков в yaml я использовал tag
 	// поэтому нужно брать конкретный пакет: Bank, Card, User и в нем выбирать нужный хэндлер
-	api.BankAddBankHandler = bank.AddBankHandlerFunc(b.handlers.AddBankHandler)
+	api.BankAddBankHandler = bank.AddBankHandlerFunc(b.handlers.Bank.Add)
+	api.BankGetBankByIDHandler = bank.GetBankByIDHandlerFunc(b.handlers.Bank.GetById)
+
+	api.UserAddUserHandler = user.AddUserHandlerFunc(b.handlers.User.Add)
+	api.UserGetUserByIDHandler = user.GetUserByIDHandlerFunc(b.handlers.User.GetById)
 }

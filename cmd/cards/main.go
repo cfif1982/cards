@@ -1,10 +1,11 @@
 package main
 
 import (
-	"cards/bootstrap"
-	"cards/internal/config"
 	"log/slog"
 	"os"
+
+	"github.com/cfif1982/cards/bootstrap"
+	"github.com/cfif1982/cards/internal/config"
 )
 
 const (

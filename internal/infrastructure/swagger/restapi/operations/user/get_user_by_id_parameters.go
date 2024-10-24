@@ -11,22 +11,21 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
-// NewGetUserByUUIDParams creates a new GetUserByUUIDParams object
+// NewGetUserByIDParams creates a new GetUserByIDParams object
 //
 // There are no default values defined in the spec.
-func NewGetUserByUUIDParams() GetUserByUUIDParams {
+func NewGetUserByIDParams() GetUserByIDParams {
 
-	return GetUserByUUIDParams{}
+	return GetUserByIDParams{}
 }
 
-// GetUserByUUIDParams contains all the bound params for the get user by UUID operation
+// GetUserByIDParams contains all the bound params for the get user by ID operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters getUserByUUID
-type GetUserByUUIDParams struct {
+// swagger:parameters getUserByID
+type GetUserByIDParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -35,14 +34,14 @@ type GetUserByUUIDParams struct {
 	  Required: true
 	  In: path
 	*/
-	UserID int64
+	UserID string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewGetUserByUUIDParams() beforehand.
-func (o *GetUserByUUIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetUserByIDParams() beforehand.
+func (o *GetUserByIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -58,7 +57,7 @@ func (o *GetUserByUUIDParams) BindRequest(r *http.Request, route *middleware.Mat
 }
 
 // bindUserID binds and validates parameter UserID from path.
-func (o *GetUserByUUIDParams) bindUserID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetUserByIDParams) bindUserID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -66,12 +65,7 @@ func (o *GetUserByUUIDParams) bindUserID(rawData []string, hasKey bool, formats 
 
 	// Required: true
 	// Parameter is provided by construction from the route
-
-	value, err := swag.ConvertInt64(raw)
-	if err != nil {
-		return errors.InvalidType("userId", "path", "int64", raw)
-	}
-	o.UserID = value
+	o.UserID = raw
 
 	return nil
 }

@@ -138,12 +138,11 @@ func init() {
         "tags": [
           "bank"
         ],
-        "summary": "Find bank by uuid",
-        "operationId": "getBankByUUID",
+        "summary": "Find bank by id",
+        "operationId": "getBankByID",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "ID of bank to return",
             "name": "bankId",
             "in": "path",
@@ -179,8 +178,7 @@ func init() {
         "operationId": "deleteBank",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "Bank uuid to delete",
             "name": "bankId",
             "in": "path",
@@ -464,12 +462,11 @@ func init() {
         "tags": [
           "user"
         ],
-        "summary": "Find user by uuid",
-        "operationId": "getUserByUUID",
+        "summary": "Find user by id",
+        "operationId": "getUserByID",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "ID of user to return",
             "name": "userId",
             "in": "path",
@@ -505,8 +502,7 @@ func init() {
         "operationId": "deleteUser",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "User uuid to delete",
             "name": "userId",
             "in": "path",
@@ -534,6 +530,10 @@ func init() {
           "format": "uint32",
           "example": 44525974
         },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "name": {
           "type": "string",
           "example": "Main Bank"
@@ -541,25 +541,23 @@ func init() {
         "telephone": {
           "type": "string",
           "example": "565-56-56"
-        },
-        "uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         }
       }
     },
     "Card": {
       "type": "object",
       "properties": {
-        "bank_uuid": {
-          "type": "integer",
-          "format": "byte16",
+        "bank_id": {
+          "type": "string",
           "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "cvs": {
           "type": "string",
           "example": "109"
+        },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "number": {
           "type": "integer",
@@ -570,14 +568,13 @@ func init() {
           "type": "string",
           "example": "12345"
         },
+        "user_id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "user_name": {
           "type": "string",
           "example": "JOHN DOE"
-        },
-        "user_uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "valid": {
           "type": "string",
@@ -610,9 +607,8 @@ func init() {
     "NewCard": {
       "type": "object",
       "properties": {
-        "bank_uuid": {
-          "type": "integer",
-          "format": "byte16",
+        "bank_id": {
+          "type": "string",
           "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "cvs": {
@@ -628,14 +624,13 @@ func init() {
           "type": "string",
           "example": "12345"
         },
+        "user_id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "user_name": {
           "type": "string",
           "example": "JOHN DOE"
-        },
-        "user_uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "valid": {
           "type": "string",
@@ -679,6 +674,10 @@ func init() {
           "type": "string",
           "example": "john@email.com"
         },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "last_name": {
           "type": "string",
           "example": "Doe"
@@ -698,11 +697,6 @@ func init() {
         "telephone": {
           "type": "string",
           "example": "12345"
-        },
-        "uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         }
       }
     }
@@ -851,12 +845,11 @@ func init() {
         "tags": [
           "bank"
         ],
-        "summary": "Find bank by uuid",
-        "operationId": "getBankByUUID",
+        "summary": "Find bank by id",
+        "operationId": "getBankByID",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "ID of bank to return",
             "name": "bankId",
             "in": "path",
@@ -892,8 +885,7 @@ func init() {
         "operationId": "deleteBank",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "Bank uuid to delete",
             "name": "bankId",
             "in": "path",
@@ -1177,12 +1169,11 @@ func init() {
         "tags": [
           "user"
         ],
-        "summary": "Find user by uuid",
-        "operationId": "getUserByUUID",
+        "summary": "Find user by id",
+        "operationId": "getUserByID",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "ID of user to return",
             "name": "userId",
             "in": "path",
@@ -1218,8 +1209,7 @@ func init() {
         "operationId": "deleteUser",
         "parameters": [
           {
-            "type": "integer",
-            "format": "byte16",
+            "type": "string",
             "description": "User uuid to delete",
             "name": "userId",
             "in": "path",
@@ -1247,6 +1237,10 @@ func init() {
           "format": "uint32",
           "example": 44525974
         },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "name": {
           "type": "string",
           "example": "Main Bank"
@@ -1254,25 +1248,23 @@ func init() {
         "telephone": {
           "type": "string",
           "example": "565-56-56"
-        },
-        "uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         }
       }
     },
     "Card": {
       "type": "object",
       "properties": {
-        "bank_uuid": {
-          "type": "integer",
-          "format": "byte16",
+        "bank_id": {
+          "type": "string",
           "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "cvs": {
           "type": "string",
           "example": "109"
+        },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "number": {
           "type": "integer",
@@ -1283,14 +1275,13 @@ func init() {
           "type": "string",
           "example": "12345"
         },
+        "user_id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "user_name": {
           "type": "string",
           "example": "JOHN DOE"
-        },
-        "user_uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "valid": {
           "type": "string",
@@ -1323,9 +1314,8 @@ func init() {
     "NewCard": {
       "type": "object",
       "properties": {
-        "bank_uuid": {
-          "type": "integer",
-          "format": "byte16",
+        "bank_id": {
+          "type": "string",
           "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "cvs": {
@@ -1341,14 +1331,13 @@ func init() {
           "type": "string",
           "example": "12345"
         },
+        "user_id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "user_name": {
           "type": "string",
           "example": "JOHN DOE"
-        },
-        "user_uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         },
         "valid": {
           "type": "string",
@@ -1392,6 +1381,10 @@ func init() {
           "type": "string",
           "example": "john@email.com"
         },
+        "id": {
+          "type": "string",
+          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
+        },
         "last_name": {
           "type": "string",
           "example": "Doe"
@@ -1411,11 +1404,6 @@ func init() {
         "telephone": {
           "type": "string",
           "example": "12345"
-        },
-        "uuid": {
-          "type": "integer",
-          "format": "byte16",
-          "example": "53aa35c8-e659-44b2-882f-f6056e443c99"
         }
       }
     }

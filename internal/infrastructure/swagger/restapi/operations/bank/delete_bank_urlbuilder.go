@@ -10,13 +10,11 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
-
-	"github.com/go-openapi/swag"
 )
 
 // DeleteBankURL generates an URL for the delete bank operation
 type DeleteBankURL struct {
-	BankID int64
+	BankID string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -44,7 +42,7 @@ func (o *DeleteBankURL) Build() (*url.URL, error) {
 
 	var _path = "/bank/{bankId}"
 
-	bankID := swag.FormatInt64(o.BankID)
+	bankID := o.BankID
 	if bankID != "" {
 		_path = strings.Replace(_path, "{bankId}", bankID, -1)
 	} else {

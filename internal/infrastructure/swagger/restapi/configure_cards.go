@@ -10,10 +10,10 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"cards/internal/infrastructure/swagger/restapi/operations"
-	"cards/internal/infrastructure/swagger/restapi/operations/bank"
-	"cards/internal/infrastructure/swagger/restapi/operations/card"
-	"cards/internal/infrastructure/swagger/restapi/operations/user"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/bank"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/card"
+	"github.com/cfif1982/cards/internal/infrastructure/swagger/restapi/operations/user"
 )
 
 //go:generate swagger generate server --target ..\..\swagger --name Cards --spec ..\..\..\..\swagger.yaml --principal interface{}
@@ -83,9 +83,9 @@ func configureAPI(api *operations.CardsAPI) http.Handler {
 			return middleware.NotImplemented("operation user.DeleteUser has not yet been implemented")
 		})
 	}
-	if api.BankGetBankByUUIDHandler == nil {
-		api.BankGetBankByUUIDHandler = bank.GetBankByUUIDHandlerFunc(func(params bank.GetBankByUUIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation bank.GetBankByUUID has not yet been implemented")
+	if api.BankGetBankByIDHandler == nil {
+		api.BankGetBankByIDHandler = bank.GetBankByIDHandlerFunc(func(params bank.GetBankByIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation bank.GetBankByID has not yet been implemented")
 		})
 	}
 	if api.CardGetCardByNumberHandler == nil {
@@ -93,9 +93,9 @@ func configureAPI(api *operations.CardsAPI) http.Handler {
 			return middleware.NotImplemented("operation card.GetCardByNumber has not yet been implemented")
 		})
 	}
-	if api.UserGetUserByUUIDHandler == nil {
-		api.UserGetUserByUUIDHandler = user.GetUserByUUIDHandlerFunc(func(params user.GetUserByUUIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation user.GetUserByUUID has not yet been implemented")
+	if api.UserGetUserByIDHandler == nil {
+		api.UserGetUserByIDHandler = user.GetUserByIDHandlerFunc(func(params user.GetUserByIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation user.GetUserByID has not yet been implemented")
 		})
 	}
 	if api.BankUpdateBankHandler == nil {
